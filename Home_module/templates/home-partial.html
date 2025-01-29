@@ -1,0 +1,46 @@
+<div class="products-area-wrapper tableView" id="courses">
+            <div class="products-header">
+                <div class="product-cell image">
+                    Course Name
+                </div>
+                <div class="product-cell category" style="margin-left: 35px">Grade
+                </div>
+                <div class="product-cell status-cell" style="margin-left: 5px">Rank
+                </div>
+                <div class="product-cell sales" style="margin-right:30px">Credit
+                </div>
+                <div class="product-cell price" style="margin-right: 25px">Professor
+                </div>
+            </div>
+            {% if request.user == student.first %}
+                {% for course in courses %}
+                    <div class="products-row">
+                        <div class="product-cell category"><span class="cell-label"></span>{{ course.name }}
+                        </div>
+                        <div class="product-cell status-cell">
+                            <span class="cell-label">Grade:</span>
+                            <span class="status
+                                {% if course.grade >= 17 %}
+                                    active
+                                {% elif course.grade >= 14 and course.grade <= 16 %}
+                                    warning
+                                {% else %}
+                                    danger
+                                {% endif %}
+                            ">{{ course.grade }}</span>
+                        </div>
+                        <div class="product-cell sales"><span class="cell-label"></span>{{ course.rank }}</div>
+                        <div class="product-cell stock"><span class="cell-label"></span>{{ course.credit }}</div>
+                        <div class="product-cell price"><span class="cell-label"></span>{{ course.professor }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert">
+                    <h3 class="alert-text">For visit information you must log in</h3>
+                    <a class="app-content-headerButton" href="{% url 'login' %}">Log in</a>
+                </div>
+            {% endif %}
+
+
+        </div>

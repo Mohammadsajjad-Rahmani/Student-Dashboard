@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+    <div class="wrapper">
+        <header>Login</header>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="field email">
+                <div class="input-area">
+                    {{ login_form.username }}
+                    {% for error in login_form.username.errors %}
+                        <p class="error error-txt">{{ error }}</p>
+                    {% endfor %}
+                    <i class="icon fas fa-id-badge"></i>
+                </div>
+            </div>
+            <div class="field password">
+                <div class="input-area">
+                    {{ login_form.password }}
+                    {% for error in login_form.password.errors %}
+                        <p class="error error-txt">{{ error }}</p>
+                    {% endfor %}
+                    <i class="icon fas fa-lock"></i>
+                </div>
+            </div>
+            {% for error in login_form.non_field_errors %}
+                <p class="error error-txt">{{ error }}</p>
+            {% endfor %}
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>

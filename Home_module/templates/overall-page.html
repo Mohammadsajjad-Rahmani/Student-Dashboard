@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" id="content-main">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ student.first.first_name }} Overall</title>
+    <link rel="stylesheet" href="../../static/css/main.css">
+    <link rel="stylesheet" href="../../static/css/home-page.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="app-container" id="content">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="app-icon">
+                <img src="../../static/images/bb2ee136-ee20-4088-8376-1efe047bc7ed.png"
+                     style="width: 50px; height: 40px; border-radius: 5px">
+            </div>
+        </div>
+        <ul class="sidebar-list">
+            <li class="sidebar-list-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                <a href="{% url 'home' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-home">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sidebar-list-item {% if request.resolver_match.url_name == 'overall' %}active{% endif %}">
+                <a href="{% url 'overall' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-pie-chart">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                        <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                    </svg>
+                    <span>Overall</span>
+                </a>
+            </li>
+            <li class="sidebar-list-item {% if request.resolver_match.url_name == 'logout' %}active{% endif %}">
+                <a href="{% url 'logout' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-shopping-bag">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="app-content">
+        <div class="app-content-header">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
+                    <h1 class="app-content-headerText">Admin</h1>
+                {% else %}
+                    <img src="{{ student.first.picture.url }}" alt="Avatar" class="avatar">
+                    <h1 class="app-content-headerText header-name">{{ student.first }}</h1>
+                {% endif %}
+            {% else %}
+                <h1 class="app-content-headerText">Cant Authenticate</h1>
+            {% endif %}
+            <button class="mode-switch" title="Switch Theme">
+                <svg class="moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                     stroke-width="2" width="24" height="24" viewBox="0 0 24 24">
+                    <defs></defs>
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                </svg>
+            </button>
+            <a href="{% url 'download-pdf' %}" id="download-pdf"
+               class="app-content-headerButton action-button download">PDF</a>
+            <a href="{% url 'download-word' %}" id="download-word"
+               class="app-content-headerButton action-button download">WORD</a>
+            <a href="{% url 'download-excel' %}" id="download-excel"
+               class="app-content-headerButton action-button download">EXCEL</a>
+        </div>
+        <div class="app-content-actions ">
+            <div class="products-area-wrapper tableView" id="courses">
+                <div class="products-header">
+                    <div class="product-cell image">
+                        Semester Number
+                    </div>
+                    <div class="product-cell category" style="margin-left: 35px">Gpa
+                    </div>
+                    <div class="product-cell status-cell" style="margin-left: 5px">Total Credits
+                    </div>
+                    <div class="product-cell sales" style="margin-right:30px">Passed Credits
+                    </div>
+                    <div class="product-cell sales" style="margin-right:30px">Failed Credits
+                    </div>
+                </div>
+                {% if request.user == student.first %}
+                    {% for semester in semesters %}
+                        <div class="products-row">
+                            <div class="product-cell category"><span
+                                    class="cell-label"></span>{{ semester.semester_number }}
+                            </div>
+                            <div class="product-cell status-cell">
+                                <span class="cell-label"></span>
+                                <span class="status
+                                {% if semester.gpa > 16 %}
+                                    active
+                                {% elif semester.gpa >= 14 and semester.gpa <= 16 %}
+                                    warning
+                                {% else %}
+                                    danger
+                                {% endif %}
+                            ">{{ semester.gpa }}</span>
+                            </div>
+                            <div class="product-cell sales"><span class="cell-label"></span>{{ semester.total_credit }}
+                            </div>
+                            <div class="product-cell stock"><span class="cell-label"></span>{{ semester.passed_credit }}
+                            </div>
+                            <div class="product-cell price"><span
+                                    class="cell-label"></span>{{ semester.failed_credits }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert">
+                        <h3 class="alert-text">For visit information you must log in</h3>
+                        <a class="app-content-headerButton" href="{% url 'login' %}">Log in</a>
+                    </div>
+                {% endif %}
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- partial -->
+<script src="../../static/js/overall-page.js"></script>
+<script src="../../static/jquery/jquery.js"></script>
+<script src="../../static/jquery/jquery.scrollUp.min.js"></script>
+<script src="../../static/jquery/jquery.prettyPhoto.js"></script>
+
+</body>
+</html>
