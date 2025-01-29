@@ -10,7 +10,7 @@ A fully functional e-commerce website built with Django using MVT.
 
 ## Screenshots  
 ### 🛍️ Dashboard Page  
-![Home Page](screenshots/homepage.jpg)  
+![Home Page](screenshots/home.jpg)  
 
 ### 🔒 Login Page  
 ![Login Page](screenshots/login.jpg)  
