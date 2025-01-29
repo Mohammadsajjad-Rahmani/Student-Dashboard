@@ -1,12 +1,11 @@
-# Django Ecommerce Store  
-A fully functional e-commerce website built with Django using MVT.  
+# Student Dashboard - Django  
+A student dashboard application where teachers can enter grades and view reports for multiple students.  
 
 ## Features  
-✅ User authentication (Signup/Login)  
-✅ Product listing with categories  
-✅ Shopping cart & checkout system  
-✅ Order history & user profile  
-✅ Admin panel for product management  
+✅ User authentication (Login/Signup)  
+✅ Admin panel to manage students and grades  
+✅ Export grades to Excel, Word, and PDF  
+✅ View detailed reports for each student  
 
 ## Screenshots  
 ### 🛍️ Dashboard Page  
